@@ -119,7 +119,7 @@ export const AbayasGallery: React.FC<AbayasGalleryProps> = ({
                     </p>
                     <div className="pt-2 flex items-center justify-between">
                       <span className="font-playfair text-lg font-bold text-[#F4E8C1]">
-                        ${abaya.price.toFixed(2)}
+                        ₦{abaya.price.toFixed(2)}
                       </span>
                       <button
                         onClick={() => onAddToCart(abaya)}

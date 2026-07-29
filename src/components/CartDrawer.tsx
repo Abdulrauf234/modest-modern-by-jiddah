@@ -90,7 +90,7 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
                         {item.product.name}
                       </h4>
                       <p className="text-xs text-[#D4AF37] font-semibold">
-                        ${itemPrice.toFixed(2)}
+                        ₦{itemPrice.toFixed(2)}
                       </p>
 
                       <div className="flex items-center space-x-2 mt-2">
@@ -112,7 +112,7 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
 
                     <div className="text-right">
                       <p className="font-playfair text-sm font-bold text-[#2C2C2C]">
-                        ${(itemPrice * item.quantity).toFixed(2)}
+                        ₦{(itemPrice * item.quantity).toFixed(2)}
                       </p>
                       <button
                         onClick={() => onRemoveItem(item.product.id)}
@@ -133,7 +133,7 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
             <div className="p-6 border-t border-gray-100 bg-[#F8F6F2] space-y-4">
               <div className="flex justify-between items-center text-sm font-bold">
                 <span className="text-[#2C2C2C]">Estimated Subtotal</span>
-                <span className="font-playfair text-xl text-[#2C2C2C]">${subtotal.toFixed(2)}</span>
+                <span className="font-playfair text-xl text-[#2C2C2C]">₦{subtotal.toFixed(2)}</span>
               </div>
 
               <p className="text-[11px] text-gray-500 font-light">

@@ -160,15 +160,15 @@ export const ProductShowcase: React.FC<ProductShowcaseProps> = ({
                       {product.discountPrice ? (
                         <div className="flex items-baseline space-x-2">
                           <span className="font-playfair text-lg font-bold text-[#2C2C2C]">
-                            ${product.discountPrice.toFixed(2)}
+                            ₦{product.discountPrice.toFixed(2)}
                           </span>
                           <span className="text-xs text-gray-400 line-through">
-                            ${product.price.toFixed(2)}
+                            ₦{product.price.toFixed(2)}
                           </span>
                         </div>
                       ) : (
                         <span className="font-playfair text-lg font-bold text-[#2C2C2C]">
-                          ${product.price.toFixed(2)}
+                          ₦{product.price.toFixed(2)}
                         </span>
                       )}
                     </div>

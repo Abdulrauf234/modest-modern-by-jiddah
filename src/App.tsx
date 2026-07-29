@@ -14,37 +14,22 @@ import { AdminDashboard } from './components/AdminDashboard';
 import { AdminLogin } from './components/AdminLogin';
 
 import type { Product, Review, Inquiry, HomepageConfig, CartItem } from './types';
-import {
-  initialProducts,
-  initialReviews,
-  initialHomepageConfig,
-  initialInquiries
-} from './mockData';
+import { initialProducts, initialReviews, initialHomepageConfig, initialInquiries } from './mockData';
+import { loadAllData, saveProducts, saveReviews, saveConfig, saveInquiries } from './lib/dataService';
 
 export function App() {
   // App View Mode
   const [currentView, setCurrentView] = React.useState<'storefront' | 'admin-login' | 'admin-dashboard'>('storefront');
 
-  // Persistent App State
-  const [products, setProducts] = React.useState<Product[]>(() => {
-    const saved = localStorage.getItem('mmj_products');
-    return saved ? JSON.parse(saved) : initialProducts;
-  });
+  // Loading state while Firestore data is being fetched
+  const [isLoading, setIsLoading] = React.useState(true);
+  const [loadError, setLoadError] = React.useState<string | null>(null);
 
-  const [reviews, setReviews] = React.useState<Review[]>(() => {
-    const saved = localStorage.getItem('mmj_reviews');
-    return saved ? JSON.parse(saved) : initialReviews;
-  });
-
-  const [inquiries, setInquiries] = React.useState<Inquiry[]>(() => {
-    const saved = localStorage.getItem('mmj_inquiries');
-    return saved ? JSON.parse(saved) : initialInquiries;
-  });
-
-  const [homepageConfig, setHomepageConfig] = React.useState<HomepageConfig>(() => {
-    const saved = localStorage.getItem('mmj_cms');
-    return saved ? JSON.parse(saved) : initialHomepageConfig;
-  });
+  // Persistent App State — starts with defaults, replaced by Firestore data on mount
+  const [products, setProducts] = React.useState<Product[]>(initialProducts);
+  const [reviews, setReviews] = React.useState<Review[]>(initialReviews);
+  const [inquiries, setInquiries] = React.useState<Inquiry[]>(initialInquiries);
+  const [homepageConfig, setHomepageConfig] = React.useState<HomepageConfig>(initialHomepageConfig);
 
   // Cart & Wishlist
   const [cart, setCart] = React.useState<CartItem[]>([]);
@@ -55,21 +40,48 @@ export function App() {
   const [quickViewProduct, setQuickViewProduct] = React.useState<Product | null>(null);
   const [searchOpen, setSearchOpen] = React.useState(false);
 
-  // Sync state to local storage
+  // Track whether this is the initial load (avoid writing back the data we just read)
+  const isInitialLoad = React.useRef(true);
+
+  // ── Load data from Firestore on mount ──────────────────────────────────────
   React.useEffect(() => {
-    localStorage.setItem('mmj_products', JSON.stringify(products));
+    loadAllData()
+      .then(({ products: p, reviews: r, config: c, inquiries: i }) => {
+        setProducts(p);
+        setReviews(r);
+        setHomepageConfig(c);
+        setInquiries(i);
+        setIsLoading(false);
+        // Allow saves AFTER the initial state has been set
+        setTimeout(() => { isInitialLoad.current = false; }, 0);
+      })
+      .catch((err) => {
+        console.error('Failed to load store data from Firestore:', err);
+        setLoadError('Could not connect to the database. Using local fallback.');
+        setIsLoading(false);
+        isInitialLoad.current = false;
+      });
+  }, []);
+
+  // ── Sync state changes back to Firestore (skip on initial load) ───────────
+  React.useEffect(() => {
+    if (isInitialLoad.current) return;
+    saveProducts(products).catch(console.error);
   }, [products]);
 
   React.useEffect(() => {
-    localStorage.setItem('mmj_reviews', JSON.stringify(reviews));
+    if (isInitialLoad.current) return;
+    saveReviews(reviews).catch(console.error);
   }, [reviews]);
 
   React.useEffect(() => {
-    localStorage.setItem('mmj_inquiries', JSON.stringify(inquiries));
+    if (isInitialLoad.current) return;
+    saveInquiries(inquiries).catch(console.error);
   }, [inquiries]);
 
   React.useEffect(() => {
-    localStorage.setItem('mmj_cms', JSON.stringify(homepageConfig));
+    if (isInitialLoad.current) return;
+    saveConfig(homepageConfig).catch(console.error);
   }, [homepageConfig]);
 
   // Cart Actions
@@ -124,16 +136,20 @@ export function App() {
   };
 
   const handleCheckoutWhatsApp = () => {
-    const orderLines = cart.map(
-      i => `• ${i.product.name} (x${i.quantity}) - $${((i.product.discountPrice || i.product.price) * i.quantity).toFixed(2)}`
-    ).join('%0A');
+    const orderItemsText = cart
+      .map(
+        i =>
+          `• ${i.product.name} (x${i.quantity}) - ₦${((i.product.discountPrice || i.product.price) * i.quantity).toLocaleString('en-NG', { minimumFractionDigits: 2 })}`
+      )
+      .join('\n');
 
-    const total = cart.reduce(
-      (sum, i) => sum + (i.product.discountPrice || i.product.price) * i.quantity,
-      0
-    ).toFixed(2);
+    const total = cart
+      .reduce((sum, i) => sum + (i.product.discountPrice || i.product.price) * i.quantity, 0)
+      .toLocaleString('en-NG', { minimumFractionDigits: 2 });
 
-    const message = `Hello%20Modest%20%26%20Modern%20By%20Jiaddah,%20I%20would%20like%20to%20place%20an%20order:%0A%0A${orderLines}%0A%0ATotal:%20$${total}`;
+    const message = encodeURIComponent(
+      `Hello Modest & Modern By Jiaddah, I would like to place an order:\n\n${orderItemsText}\n\nTotal: ₦${total}`
+    );
     window.open(`https://wa.me/2348000000000?text=${message}`, '_blank');
   };
 
@@ -174,7 +190,17 @@ export function App() {
   // Public Storefront View
   return (
     <div className="min-h-screen bg-[#F8F6F2] relative font-poppins selection:bg-[#D4AF37] selection:text-white">
-      
+      {isLoading && (
+        <div className="bg-[#D4AF37] text-white text-xs py-1.5 text-center font-medium">
+          Syncing latest store updates from database...
+        </div>
+      )}
+      {loadError && (
+        <div className="bg-amber-600 text-white text-xs py-1.5 text-center font-medium">
+          {loadError}
+        </div>
+      )}
+
       {/* Navigation */}
       <Navbar
         cart={cart}

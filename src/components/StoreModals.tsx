@@ -82,15 +82,15 @@ export const StoreModals: React.FC<ModalsProps> = ({
                     {quickViewProduct.discountPrice ? (
                       <>
                         <span className="font-playfair text-2xl font-bold text-[#2C2C2C]">
-                          ${quickViewProduct.discountPrice.toFixed(2)}
+                          ₦{quickViewProduct.discountPrice.toFixed(2)}
                         </span>
                         <span className="text-sm text-gray-400 line-through">
-                          ${quickViewProduct.price.toFixed(2)}
+                          ₦{quickViewProduct.price.toFixed(2)}
                         </span>
                       </>
                     ) : (
                       <span className="font-playfair text-2xl font-bold text-[#2C2C2C]">
-                        ${quickViewProduct.price.toFixed(2)}
+                        ₦{quickViewProduct.price.toFixed(2)}
                       </span>
                     )}
                   </div>
@@ -179,7 +179,7 @@ export const StoreModals: React.FC<ModalsProps> = ({
                       <div className="flex-1">
                         <span className="text-[10px] uppercase font-bold text-[#D4AF37]">{item.category}</span>
                         <h4 className="font-playfair text-white text-sm font-bold line-clamp-1">{item.name}</h4>
-                        <p className="text-xs text-gray-300 font-semibold mt-1">${item.price.toFixed(2)}</p>
+                        <p className="text-xs text-gray-300 font-semibold mt-1">₦{item.price.toFixed(2)}</p>
                       </div>
                     </div>
                   ))}
