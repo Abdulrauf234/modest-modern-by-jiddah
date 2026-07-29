@@ -12,18 +12,18 @@ export const Footer: React.FC<FooterProps> = ({ onNavigateSection, onNavigateToA
   };
 
   return (
-    <footer className="bg-white border-t border-[#D4AF37]/20 pt-16 pb-12 relative text-left">
+    <footer className="bg-white border-t border-[#D4AF37]/20 pt-16 pb-12 relative text-center md:text-left">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 mb-16">
           
           {/* Column 1: Brand Info */}
-          <div className="lg:col-span-2 space-y-4">
+          <div className="lg:col-span-2 space-y-4 flex flex-col items-center md:items-start">
             <div className="flex items-center space-x-3 cursor-pointer" onClick={scrollToTop}>
               <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-[#D4AF37] to-[#F4E8C1] flex items-center justify-center text-white font-playfair font-bold text-xl shadow-md border border-white">
                 M
               </div>
-              <div>
+              <div className="text-left">
                 <span className="font-playfair text-xl font-bold tracking-tight text-[#2C2C2C] block leading-none">
                   Modest & Modern
                 </span>
@@ -37,7 +37,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigateSection, onNavigateToA
               Elevating everyday living with style and elegance. Curating premium kitchenware, modest luxury abayas, and contemporary gadgets.
             </p>
 
-            <div className="flex items-center space-x-3 pt-2">
+            <div className="flex items-center space-x-3 pt-2 justify-center md:justify-start">
               <a href="https://wa.me/2348000000000" className="p-2 rounded-full bg-[#F8F6F2] text-[#2C2C2C] hover:bg-[#D4AF37] hover:text-white transition-colors">
                 <PhoneCall className="w-4 h-4" />
               </a>
@@ -48,7 +48,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigateSection, onNavigateToA
           </div>
 
           {/* Column 2: Quick Links */}
-          <div className="space-y-3">
+          <div className="space-y-3 flex flex-col items-center md:items-start">
             <h4 className="font-playfair text-base font-bold text-[#2C2C2C] uppercase tracking-wider">
               Quick Links
             </h4>
@@ -63,7 +63,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigateSection, onNavigateToA
           </div>
 
           {/* Column 3: Customer Care */}
-          <div className="space-y-3">
+          <div className="space-y-3 flex flex-col items-center md:items-start">
             <h4 className="font-playfair text-base font-bold text-[#2C2C2C] uppercase tracking-wider">
               Customer Care
             </h4>
@@ -78,7 +78,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigateSection, onNavigateToA
           </div>
 
           {/* Column 4: Contact & Incognito Portal */}
-          <div className="space-y-3">
+          <div className="space-y-3 flex flex-col items-center md:items-start">
             <h4 className="font-playfair text-base font-bold text-[#2C2C2C] uppercase tracking-wider">
               Boutique Info
             </h4>

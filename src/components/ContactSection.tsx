@@ -133,9 +133,9 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ onAddInquiry }) 
           </div>
 
           {/* Right: Contact Information & Embedded Map Placeholder */}
-          <div className="lg:col-span-5 space-y-8 text-left">
+          <div className="lg:col-span-5 space-y-8 text-center lg:text-left flex flex-col items-center lg:items-start w-full">
             
-            <div className="bg-white rounded-3xl p-8 border border-[#D4AF37]/20 shadow-xl space-y-6">
+            <div className="bg-white rounded-3xl p-8 border border-[#D4AF37]/20 shadow-xl space-y-6 w-full">
               <h3 className="font-playfair text-2xl font-bold text-[#2C2C2C]">
                 Direct Channels
               </h3>
@@ -145,9 +145,9 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ onAddInquiry }) 
                   href="https://wa.me/2348000000000"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center space-x-4 p-3 rounded-xl hover:bg-[#F8F6F2] transition-colors group"
+                  className="flex items-center space-x-4 p-3 rounded-xl hover:bg-[#F8F6F2] transition-colors group text-left"
                 >
-                  <div className="w-10 h-10 rounded-full bg-emerald-500 text-white flex items-center justify-center shadow-md">
+                  <div className="w-10 h-10 rounded-full bg-emerald-500 text-white flex items-center justify-center shadow-md flex-shrink-0">
                     <PhoneCall className="w-5 h-5" />
                   </div>
                   <div>
@@ -158,9 +158,9 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ onAddInquiry }) 
 
                 <a
                   href="mailto:contact@jiaddah.com"
-                  className="flex items-center space-x-4 p-3 rounded-xl hover:bg-[#F8F6F2] transition-colors group"
+                  className="flex items-center space-x-4 p-3 rounded-xl hover:bg-[#F8F6F2] transition-colors group text-left"
                 >
-                  <div className="w-10 h-10 rounded-full bg-[#D4AF37] text-white flex items-center justify-center shadow-md">
+                  <div className="w-10 h-10 rounded-full bg-[#D4AF37] text-white flex items-center justify-center shadow-md flex-shrink-0">
                     <Mail className="w-5 h-5" />
                   </div>
                   <div>
@@ -169,8 +169,8 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ onAddInquiry }) 
                   </div>
                 </a>
 
-                <div className="flex items-center space-x-4 p-3 rounded-xl">
-                  <div className="w-10 h-10 rounded-full bg-[#2C2C2C] text-[#D4AF37] flex items-center justify-center shadow-md">
+                <div className="flex items-center space-x-4 p-3 rounded-xl text-left">
+                  <div className="w-10 h-10 rounded-full bg-[#2C2C2C] text-[#D4AF37] flex items-center justify-center shadow-md flex-shrink-0">
                     <MapPin className="w-5 h-5" />
                   </div>
                   <div>

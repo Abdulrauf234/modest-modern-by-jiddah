@@ -24,7 +24,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
           
           {/* Left Column: Headlines & Call to Actions */}
-          <div className="lg:col-span-7 space-y-6 text-left">
+          <div className="lg:col-span-7 space-y-6 text-center lg:text-left flex flex-col items-center lg:items-start">
             
             {/* Luxe Badge */}
             <div className="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-[#F8F6F2] border border-[#D4AF37]/30 text-xs font-semibold uppercase tracking-widest text-[#D4AF37]">
@@ -38,7 +38,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
             </h1>
 
             {/* Gold Accent Line */}
-            <div className="w-20 h-1 bg-gradient-to-r from-[#D4AF37] to-[#F4E8C1] rounded-full"></div>
+            <div className="w-20 h-1 bg-gradient-to-r from-[#D4AF37] to-[#F4E8C1] rounded-full mx-auto lg:mx-0"></div>
 
             {/* Subheading */}
             <p className="text-gray-600 text-base sm:text-lg max-w-2xl font-light leading-relaxed">
@@ -46,7 +46,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
             </p>
 
             {/* CTAs */}
-            <div className="pt-4 flex flex-col sm:flex-row items-stretch sm:items-center space-y-3 sm:space-y-0 sm:space-x-4">
+            <div className="pt-4 flex flex-col sm:flex-row items-stretch sm:items-center space-y-3 sm:space-y-0 sm:space-x-4 w-full sm:w-auto">
               <button
                 onClick={onShopCollection}
                 className="px-8 py-4 rounded-full bg-gradient-to-r from-[#D4AF37] via-[#C59B27] to-[#AA8B22] text-white font-semibold text-sm uppercase tracking-wider shadow-lg hover:shadow-xl hover:brightness-105 transition-all transform hover:-translate-y-0.5 flex items-center justify-center space-x-2 group cursor-pointer"
@@ -64,7 +64,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
             </div>
 
             {/* Trust Signals */}
-            <div className="pt-8 border-t border-gray-100 grid grid-cols-3 gap-4 text-left">
+            <div className="pt-8 border-t border-gray-100 grid grid-cols-3 gap-4 text-center lg:text-left w-full">
               <div>
                 <p className="font-playfair text-2xl font-bold text-[#2C2C2C]">100%</p>
                 <p className="text-xs text-gray-500 font-medium">Authentic & Pure</p>
@@ -74,7 +74,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                 <p className="text-xs text-gray-500 font-medium">Happy Clients</p>
               </div>
               <div>
-                <div className="flex items-center text-[#D4AF37] space-x-0.5 mb-1">
+                <div className="flex items-center justify-center lg:justify-start text-[#D4AF37] space-x-0.5 mb-1">
                   {[...Array(5)].map((_, i) => (
                     <Star key={i} className="w-3.5 h-3.5 fill-current" />
                   ))}
