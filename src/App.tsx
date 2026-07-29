@@ -150,7 +150,13 @@ export function App() {
     const message = encodeURIComponent(
       `Hello Modest & Modern By Jiaddah, I would like to place an order:\n\n${orderItemsText}\n\nTotal: ₦${total}`
     );
-    window.open(`https://wa.me/2348000000000?text=${message}`, '_blank');
+    const whatsappUrl = `https://wa.me/2348000000000?text=${message}`;
+
+    // Try window.open first; fallback to location redirect to bypass mobile popup blockers
+    const win = window.open(whatsappUrl, '_blank');
+    if (!win || win.closed || typeof win.closed === 'undefined') {
+      window.location.href = whatsappUrl;
+    }
   };
 
   const scrollToSection = (sectionId: string) => {
