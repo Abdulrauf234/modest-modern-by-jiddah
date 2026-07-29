@@ -40,8 +40,8 @@ export function App() {
   const [quickViewProduct, setQuickViewProduct] = React.useState<Product | null>(null);
   const [searchOpen, setSearchOpen] = React.useState(false);
 
-  // Track whether this is the initial load (avoid writing back the data we just read)
-  const isInitialLoad = React.useRef(true);
+  // Track whether data has been loaded so save effects don't fire on initial setState
+  const [isLoaded, setIsLoaded] = React.useState(false);
 
   // ── Load data from Firestore on mount ──────────────────────────────────────
   React.useEffect(() => {
@@ -52,37 +52,36 @@ export function App() {
         setHomepageConfig(c);
         setInquiries(i);
         setIsLoading(false);
-        // Allow saves AFTER the initial state has been set
-        setTimeout(() => { isInitialLoad.current = false; }, 0);
+        setIsLoaded(true);
       })
       .catch((err) => {
         console.error('Failed to load store data from Firestore:', err);
         setLoadError('Could not connect to the database. Using local fallback.');
         setIsLoading(false);
-        isInitialLoad.current = false;
+        setIsLoaded(true);
       });
   }, []);
 
-  // ── Sync state changes back to Firestore (skip on initial load) ───────────
+  // ── Sync state changes back to storage/Firestore (only after load) ─────────
   React.useEffect(() => {
-    if (isInitialLoad.current) return;
+    if (!isLoaded) return;
     saveProducts(products).catch(console.error);
-  }, [products]);
+  }, [products, isLoaded]);
 
   React.useEffect(() => {
-    if (isInitialLoad.current) return;
+    if (!isLoaded) return;
     saveReviews(reviews).catch(console.error);
-  }, [reviews]);
+  }, [reviews, isLoaded]);
 
   React.useEffect(() => {
-    if (isInitialLoad.current) return;
+    if (!isLoaded) return;
     saveInquiries(inquiries).catch(console.error);
-  }, [inquiries]);
+  }, [inquiries, isLoaded]);
 
   React.useEffect(() => {
-    if (isInitialLoad.current) return;
+    if (!isLoaded) return;
     saveConfig(homepageConfig).catch(console.error);
-  }, [homepageConfig]);
+  }, [homepageConfig, isLoaded]);
 
   // Cart Actions
   const handleAddToCart = (product: Product) => {

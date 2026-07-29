@@ -411,7 +411,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                             </div>
                           </td>
                           <td className="p-4 font-medium text-gray-700">{product.category}</td>
-                          <td className="p-4 font-bold text-[#2C2C2C]">${product.price.toFixed(2)}</td>
+                          <td className="p-4 font-bold text-[#2C2C2C]">₦{product.price.toFixed(2)}</td>
                           <td className="p-4 font-medium">{product.stock} units</td>
                           <td className="p-4">
                             {product.isArchived ? (
@@ -546,13 +546,42 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
               </div>
 
               <div>
-                <label className="block font-bold text-[#2C2C2C] mb-2 uppercase">Hero Image URL</label>
-                <input
-                  type="text"
-                  value={cmsConfig.heroImage}
-                  onChange={(e) => setCmsConfig({ ...cmsConfig, heroImage: e.target.value })}
-                  className="w-full p-3 rounded-xl border border-gray-200 outline-none"
-                />
+                <label className="block font-bold text-[#2C2C2C] mb-2 uppercase">Hero Image</label>
+                <div className="space-y-3">
+                  <input
+                    type="text"
+                    placeholder="Enter image URL..."
+                    value={cmsConfig.heroImage}
+                    onChange={(e) => setCmsConfig({ ...cmsConfig, heroImage: e.target.value })}
+                    className="w-full p-3 rounded-xl border border-gray-200 outline-none text-xs"
+                  />
+                  <div className="flex items-center gap-3">
+                    <label className="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold rounded-xl text-xs cursor-pointer transition-colors inline-flex items-center space-x-2">
+                      <Plus className="w-4 h-4" />
+                      <span>Upload Custom Hero Image File</span>
+                      <input
+                        type="file"
+                        accept="image/*"
+                        className="hidden"
+                        onChange={(e) => {
+                          const file = e.target.files?.[0];
+                          if (file) {
+                            const reader = new FileReader();
+                            reader.onloadend = () => {
+                              setCmsConfig({ ...cmsConfig, heroImage: reader.result as string });
+                            };
+                            reader.readAsDataURL(file);
+                          }
+                        }}
+                      />
+                    </label>
+                  </div>
+                  {cmsConfig.heroImage && (
+                    <div className="mt-2">
+                      <img src={cmsConfig.heroImage} alt="Hero Preview" className="w-32 h-20 rounded-xl object-cover border border-gray-200 shadow-sm" />
+                    </div>
+                  )}
+                </div>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4 border-t border-gray-100">
@@ -685,7 +714,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                   </div>
 
                   <div>
-                    <label className="block font-bold text-[#2C2C2C] mb-1">Price ($)</label>
+                    <label className="block font-bold text-[#2C2C2C] mb-1">Price (₦)</label>
                     <input
                       type="number"
                       step="0.01"
@@ -706,7 +735,14 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                       onClick={() => setImageTab('device')}
                       className={`px-3 py-1 rounded-lg text-[11px] font-semibold cursor-pointer ${imageTab === 'device' ? 'bg-[#D4AF37] text-white' : 'bg-gray-100 text-gray-600'}`}
                     >
-                      Direct Image URL
+                      Upload File
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setImageTab('url')}
+                      className={`px-3 py-1 rounded-lg text-[11px] font-semibold cursor-pointer ${imageTab === 'url' ? 'bg-[#D4AF37] text-white' : 'bg-gray-100 text-gray-600'}`}
+                    >
+                      Image URL
                     </button>
                     <button
                       type="button"
@@ -718,13 +754,38 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                   </div>
 
                   {imageTab === 'device' ? (
+                    <div className="space-y-2">
+                      <label className="flex flex-col items-center justify-center w-full h-28 border-2 border-dashed border-gray-300 rounded-xl cursor-pointer bg-gray-50 hover:bg-gray-100 transition-colors">
+                        <div className="flex flex-col items-center justify-center pt-2 pb-3">
+                          <Plus className="w-6 h-6 text-gray-400 mb-1" />
+                          <p className="text-xs text-gray-600 font-medium">Click to select image file from computer</p>
+                          <p className="text-[10px] text-gray-400">PNG, JPG, WEBP (Max 5MB)</p>
+                        </div>
+                        <input
+                          type="file"
+                          accept="image/*"
+                          className="hidden"
+                          onChange={(e) => {
+                            const file = e.target.files?.[0];
+                            if (file) {
+                              const reader = new FileReader();
+                              reader.onloadend = () => {
+                                setEditingProduct({ ...editingProduct, image: reader.result as string });
+                              };
+                              reader.readAsDataURL(file);
+                            }
+                          }}
+                        />
+                      </label>
+                    </div>
+                  ) : imageTab === 'url' ? (
                     <div>
                       <input
                         type="text"
                         placeholder="Paste image URL (.jpg, .png, Unsplash, Drive)..."
                         value={editingProduct.image}
                         onChange={(e) => setEditingProduct({ ...editingProduct, image: e.target.value })}
-                        className="w-full p-3 rounded-xl border border-gray-200 outline-none"
+                        className="w-full p-3 rounded-xl border border-gray-200 outline-none text-xs"
                       />
                     </div>
                   ) : (
@@ -735,12 +796,12 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                           placeholder="Paste Instagram Post or Reel Link..."
                           value={instagramInput}
                           onChange={(e) => setInstagramInput(e.target.value)}
-                          className="flex-1 p-3 rounded-xl border border-gray-200 outline-none"
+                          className="flex-1 p-3 rounded-xl border border-gray-200 outline-none text-xs"
                         />
                         <button
                           type="button"
                           onClick={handleInstagramImport}
-                          className="px-4 py-3 bg-[#2C2C2C] text-white rounded-xl font-bold cursor-pointer"
+                          className="px-4 py-3 bg-[#2C2C2C] text-white rounded-xl font-bold cursor-pointer text-xs"
                         >
                           Import
                         </button>
@@ -752,9 +813,18 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                   )}
 
                   {editingProduct.image && (
-                    <div className="mt-2">
-                      <p className="text-[10px] text-gray-400 mb-1">Image Preview:</p>
-                      <img src={editingProduct.image} alt="Preview" className="w-20 h-20 rounded-xl object-cover border" />
+                    <div className="mt-2 flex items-center gap-3">
+                      <img src={editingProduct.image} alt="Preview" className="w-16 h-16 rounded-xl object-cover border border-gray-200 shadow-sm" />
+                      <div>
+                        <p className="text-[10px] text-gray-400 font-semibold">Image Loaded Successfully</p>
+                        <button
+                          type="button"
+                          onClick={() => setEditingProduct({ ...editingProduct, image: '' })}
+                          className="text-[11px] text-red-500 hover:underline font-medium"
+                        >
+                          Remove Image
+                        </button>
+                      </div>
                     </div>
                   )}
                 </div>
