@@ -191,13 +191,14 @@ export function App() {
   return (
     <div className="min-h-screen bg-[#F8F6F2] relative font-poppins selection:bg-[#D4AF37] selection:text-white">
       {isLoading && (
-        <div className="bg-[#D4AF37] text-white text-xs py-1.5 text-center font-medium">
-          Syncing latest store updates from database...
+        <div className="fixed bottom-4 left-1/2 -translate-x-1/2 z-50 bg-[#2C2C2C]/90 text-white text-xs px-4 py-2 rounded-full shadow-2xl backdrop-blur-md flex items-center space-x-2 border border-[#D4AF37]/40 pointer-events-none">
+          <div className="w-2 h-2 rounded-full bg-[#D4AF37] animate-ping"></div>
+          <span>Syncing latest store updates...</span>
         </div>
       )}
       {loadError && (
-        <div className="bg-amber-600 text-white text-xs py-1.5 text-center font-medium">
-          {loadError}
+        <div className="fixed bottom-4 left-1/2 -translate-x-1/2 z-50 bg-red-900/90 text-white text-xs px-4 py-2 rounded-full shadow-2xl backdrop-blur-md flex items-center space-x-2 border border-red-500/40">
+          <span>{loadError}</span>
         </div>
       )}
 

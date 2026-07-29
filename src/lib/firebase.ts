@@ -6,12 +6,12 @@ import { getFirestore } from 'firebase/firestore';
 // Get them from: Firebase Console → Project Settings → Your Apps → Web App
 // ─────────────────────────────────────────────────────────────────────────────
 const firebaseConfig = {
-  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
-  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
-  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
-  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
-  appId: import.meta.env.VITE_FIREBASE_APP_ID,
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY || "AIzaSyA7b3iySq7-2VZgs59Z-sNQcOuIP4WZ5mQ",
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN || "modest-modern.firebaseapp.com",
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID || "modest-modern",
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET || "modest-modern.firebasestorage.app",
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID || "45108480347",
+  appId: import.meta.env.VITE_FIREBASE_APP_ID || "1:45108480347:web:725f8eb8ef94e40d6af27e",
 };
 
 const app = initializeApp(firebaseConfig);
